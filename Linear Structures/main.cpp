@@ -68,7 +68,7 @@ public:
     }
 
     bool isFull() {
-        return size == MAX_SIZE;
+        return size == SIZE;
     }
 
     int listSize() {
@@ -90,3 +90,8 @@ public:
         cout << "\n";
     }
 };
+
+
+int main() {
+    
+}
