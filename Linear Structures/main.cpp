@@ -50,14 +50,12 @@ public:
         }
     }
 
-    // Replace the element at a specific index with a new element
     void replaceAt(T newElement, int index) {
         if (index >= 0 && index < size) {
             data[index] = newElement;
         }
     }
 
-    // Check if an element at a specific index is equal to a given element
     bool isItemAtEqual(T element, int index) {
         if (index >= 0 && index < size) {
             return data[index] == element;
@@ -65,37 +63,30 @@ public:
         return false;
     }
 
-    // Check if the list is empty
     bool isEmpty() {
         return size == 0;
     }
 
-    // Check if the list is full
     bool isFull() {
         return size == MAX_SIZE;
     }
 
-    // Get the current size of the list
     int listSize() {
         return size;
     }
 
-    // Get the maximum size of the list
     int maxListSize() {
-        return MAX_SIZE;
+        return SIZE;
     }
 
-    // Clear the list by setting the size to 0
     void clear() {
         size = 0;
     }
 
-    // Print the elements of the list
     void print() {
-        cout << "[ ";
         for (int i = 0; i < size; i++) {
             cout << data[i] << " ";
         }
-        cout << "]" << endl;
+        cout << "\n";
     }
 };
