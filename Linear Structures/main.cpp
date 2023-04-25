@@ -701,11 +701,19 @@ public:
         lst.insertAtHead(element);
     }
     T dequeue() {
+        if (lst.isEmpty()) {
+            cout << "Queue is empty\n";
+            return T();
+        }
         T first = lst.retrieveAt(0);
         lst.removeAtHead();
         return first;
     }
     T first() {
+        if (lst.isEmpty()) {
+            cout << "Queue is empty\n";
+            return T();
+        }
         return lst.retrieveAt(0);
     }
     bool isEmpty() {
