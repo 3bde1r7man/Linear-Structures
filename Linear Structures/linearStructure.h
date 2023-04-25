@@ -706,8 +706,8 @@ public:
             cout << "Queue is empty\n";
             return T();
         }
-        T first = lst.retrieveAt(0);
-        lst.removeAtHead();
+        T first = lst.retrieveAt(lst.doubleLinkedListSize() - 1);
+        lst.removeAtTail();
         return first;
     }
     T first() {
