@@ -91,9 +91,6 @@ public:
     }
 };
 
-
-
-
 template <class T>
 class SingleListNode {
 public:
@@ -384,5 +381,309 @@ public:
     }
 };
 
+template <class T>
+class DoubleListNode
+{
+public:
+    T data;
+    DoubleListNode<T>* prev;
+    DoubleListNode<T>* next;
+
+    DoubleListNode(T d) {
+        data = d;
+        prev = nullptr;
+        next = nullptr;
+    }
+
+};
+
+template<class T>
+class DoubleLinkedList
+{
+    DoubleListNode<T>* head;
+    DoubleListNode<T>* tail;
+    int size;
+public:
+    DoubleLinkedList() {
+        head = NULL;
+        tail = NULL;
+        size = 0;
+    }
+    ~DoubleLinkedList() {
+        clear();
+    }
+    void insertAtHead(T element) {
+        DoubleListNode<T>* node = new DoubleListNode<T>(element);
+        if (head == NULL) {
+            head = node;
+            tail = node;
+        }
+        else {
+            node->next = head;
+            head->prev = node;
+            head = node;
+        }
+        size++;
+    }
+    void insertAtTail(T element) {
+        DoubleListNode<T>* node = new DoubleListNode<T>(element);
+        if (tail == NULL) {
+            head = node;
+            tail = node;
+        }
+        else {
+            tail->next = node;
+            node->prev = tail;
+            tail = node;
+        }
+        size++;
+    }
+    void insertAt(T element, int index) {
+        if (index < 0 || index > size) {
+            throw out_of_range("Index out of range");
+        }
+        if (index == 0) {
+            insertAtHead(element);
+        }
+        else if (index == size) {
+            insertAtTail(element);
+        }
+        else
+        {
+            DoubleListNode<T>* node = new DoubleListNode<T>(element);
+            DoubleListNode<T>* curr = head;
+            for (int i = 0; i < index; i++)
+            {
+                curr = curr->next;
+            }
+            node->next = curr;
+            curr->prev->next = node;
+            node->prev = curr->prev;
+            curr->prev = node;
+            
+            size++;
+        }
+        
+
+    }
+    void insertAfter(DoubleListNode<T>* prevNode, int data) {
+        if (prevNode == NULL) {
+            cout << "Previous node cannot be null\n";
+            return;
+        }
+        DoubleListNode<T>* node = new DoubleListNode<T>(data);
+        node->next = prevNode->next;
+        node->prev = prevNode;
+        prevNode->next = node;
+        if (node->next != nullptr) {
+            node->next->prev = node;
+        }
+        else {
+            tail = node;
+        }
+        size++;
+
+    }
+    void removeAtHead() {
+        if (head == NULL)
+        {
+            cout << "List is already empty\n";
+            return;
+        }
+        DoubleListNode<T>* temp = head;
+        head = head->next;
+        if (head != NULL) {
+            head->prev = NULL;
+        }
+        else {
+            tail = NULL;
+        }
+        delete temp;
+        size--;
+    }
+    void removeAtTail() {
+        if (tail == NULL) {
+            cout << "List is already empty\n";
+            return;
+        }
+        DoubleListNode<T>* temp = tail;
+        tail = tail->prev;
+        if (tail != NULL) {
+            tail->next = NULL;
+        }
+        else {
+            head = NULL;
+        }
+        delete temp;
+        size--;
+    }
+    void removeAt(int index) {
+        if (index < 0 || index >= size) {
+            throw out_of_range("Index out of range");
+        }
+        if (index == 0) {
+            removeAtHead();
+            return;
+        }
+        if (index == size - 1) {
+            removeAtTail();
+            return;
+        }
+        DoubleListNode<T>* curr = head;
+        for (int i = 0; i < index; i++)
+        {
+            curr = curr->next;
+        }
+        curr->next->prev = curr->prev;
+        curr->prev->next = curr->next;
+        delete curr;
+        size--;
+    }
+    T retrieveAt(int index) {
+        if (index < 0 || index >= size) {
+            throw out_of_range("Index out of range");
+        }
+        DoubleListNode<T>* curr = head;
+        for (int i = 0; i < index; i++)
+        {
+            curr = curr->next;
+        }
+        return curr->data;
+    }
+    void replaceAt(T newElement, int index) {
+        if (index < 0 || index >= size) {
+            throw out_of_range("Index out of range");
+        }
+        DoubleListNode<T>* curr = head;
+        for (int i = 0; i < index; i++)
+        {
+            curr = curr->next;
+        }
+        curr->data = newElement;
+    }
+    bool isExist(T element) {
+        DoubleListNode<T>* curr = head;
+        while (curr != NULL) {
+            if (curr->data == element) {
+                return true;
+            }
+            curr = curr->next;
+        }
+        return false;
+    }
+    bool isItemAtEqual(T element, int index) {
+        if (index < 0 || index >= size) {
+            throw out_of_range("Index out of range");
+        }
+        DoubleListNode<T>* curr = head;
+        for (int i = 0; i < index; i++)
+        {
+            curr = curr->next;
+        }
+        if (curr->data == element)
+            return true;
+
+        return false;
+    }
+    void swap(int firstItemIdx, int secondItemIdx) {
+        if (firstItemIdx < 0 || firstItemIdx >= size || secondItemIdx < 0 || secondItemIdx >= size) {
+            throw out_of_range("Index out of range");
+        }
+        if (firstItemIdx == secondItemIdx) {
+            return;
+        }
+        DoubleListNode<T>* firstNode = head;
+        for (int i = 0; i < firstItemIdx; i++)
+        {
+            firstNode = firstNode->next;
+        }
+        DoubleListNode<T>* secNode = head;
+        for (int i = 0; i < secondItemIdx; i++)
+        {
+            secNode = secNode->next;
+        }
+        DoubleListNode<T>* temp = firstNode->prev;
+        firstNode->prev = secNode->prev;
+        secNode->prev = temp;
+        temp = firstNode->next;
+        firstNode->next = secNode->next;
+        secNode->next = temp;
+        if (firstNode->prev == nullptr) {
+            head = firstNode;
+        }
+        else {
+            firstNode->prev->next = firstNode;
+        }
+        if (firstNode->next == nullptr) {
+            tail = firstNode;
+        }
+        else {
+            firstNode->next->prev = firstNode;
+        }
+        if (secNode->prev == nullptr) {
+            head = secNode;
+        }
+        else {
+            secNode->prev->next = secNode;
+        }
+        if (secNode->next == nullptr) {
+            tail = secNode;
+        }
+        else {
+            secNode->next->prev = secNode;
+        }
+
+    }
+    void reverse() {
+        DoubleListNode<T>* curr = head;
+        while (curr != nullptr)
+        {
+            DoubleListNode<T>* temp = curr->next;
+            curr->next = curr->prev;
+            curr->prev = temp;
+            curr = temp;
+        }
+        curr = head;
+        head = tail;
+        tail = curr;
+    }
+    bool isEmpty() {
+        return size == 0;
+    }
+    int doubleLinkedListSize() {
+        return size;
+    }
+    void clear() {
+        while (head != nullptr) {
+            DoubleListNode<T>* temp = head;
+            head = head->next;
+            delete temp;
+        }
+        tail = nullptr;
+        size = 0;
+    }
+    void forwardTraversal() {
+        DoubleListNode<T>* curr = head;
+        while (curr != nullptr)
+        {
+            cout << curr->data << ' ';
+            curr = curr->next;
+        }
+        cout << '\n';
+    }
+    void backwardTraversal() {
+        DoubleListNode<T>* curr = tail;
+        while (curr != nullptr)
+        {
+            cout << curr->data << ' ';
+            curr = curr->prev;
+        }
+        cout << '\n';
+    }
+
+};
+
+
 int main() {
+   
 }
