@@ -683,6 +683,46 @@ public:
 
 };
 
+template<class T>
+class Queue
+{
+private:
+    DoubleLinkedList<T> lst;
+public:
+    
+
+    ~Queue()
+    {
+        clear();
+    }
+
+    
+    void enqueue(T element) {
+        lst.insertAtHead(element);
+    }
+    T dequeue() {
+        T first = lst.retrieveAt(0);
+        lst.removeAtHead();
+        return first;
+    }
+    T first() {
+        return lst.retrieveAt(0);
+    }
+    bool isEmpty() {
+        return lst.isEmpty();
+    }
+    int queueSize() {
+        return lst.doubleLinkedListSize();
+    }
+    void clear() {
+        lst.clear();
+    }
+    void print() {
+        lst.forwardTraversal();
+    }
+
+};
+
 
 int main() {
    
