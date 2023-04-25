@@ -715,7 +715,7 @@ public:
             cout << "Queue is empty\n";
             return T();
         }
-        return lst.retrieveAt(0);
+        return lst.retrieveAt(lst.doubleLinkedListSize() - 1);
     }
     bool isEmpty() {
         return lst.isEmpty();
@@ -727,7 +727,7 @@ public:
         lst.clear();
     }
     void print() {
-        lst.forwardTraversal();
+        lst.backwardTraversal();
     }
 
 };
